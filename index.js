@@ -3,7 +3,21 @@ const filterByRegion = document.querySelector('.filter-by-region')
 const searchInput = document.querySelector('.search-container input')
 const themeChanger = document.querySelector('.theme-changer')
 
-let allCountriesData
+let allCountriesData;
+
+
+function applyModePreference() {
+  const modePreference = getModePreference();
+  if (modePreference === 'dark') {
+      document.body.classList.add('dark');
+  } else {
+      document.body.classList.remove('dark');
+  }
+}
+
+// Apply the mode preference when the page loads
+window.addEventListener('DOMContentLoaded', applyModePreference);
+
 
 fetch('https://restcountries.com/v3.1/all')
   .then((res) => res.json())
@@ -50,4 +64,28 @@ searchInput.addEventListener('input',  (e) => {
 
 themeChanger.addEventListener('click', () => {
   document.body.classList.toggle('dark')
+  if(document.body.classList.contains('dark')){
+  saveModePreference('dark');
+  }
+  else{
+    saveModePreference('light');
+  }
+  
 })
+
+// Function to save the mode preference to localStorage
+function saveModePreference(mode) {
+  localStorage.setItem('mode', mode);
+}
+
+// Function to retrieve the mode preference from localStorage
+function getModePreference() {
+  return localStorage.getItem('mode');
+}
+
+
+
+
+
+
+
